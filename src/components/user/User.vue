@@ -287,7 +287,6 @@ export default {
       }
 
       const { data: res } = await this.$http.delete(`users/${id}`)
-      console.log(res)
       if (res.meta.status !== 200) {
         return this.$message.error('删除失败！')
       }
