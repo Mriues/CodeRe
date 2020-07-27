@@ -61,9 +61,9 @@ export default {
         if (!valid) return
         const { data: res } = await this.$http.post('login', this.loginForm)
         if (!res.success) {
-          return this.$message.error('登录失败,用户不存在')
+          return this.$message.error(res.msg)
         } else {
-          this.$message.success('登录成功')
+          this.$message.success(res.msg)
           window.sessionStorage.setItem('token', res.token)
           this.$router.push('/home')
         }
@@ -123,5 +123,6 @@ export default {
 .btns {
   display: flex;
   justify-content: flex-end;
+  transform: translate(-30%);
 }
 </style>
