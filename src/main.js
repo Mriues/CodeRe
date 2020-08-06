@@ -4,6 +4,7 @@ import router from './router'
 import './plugins/element.js'
 import './assets/css/global.css'
 import axios from 'axios'
+import TreeTable from 'vue-table-with-tree-grid'
 
 axios.defaults.baseURL = 'http://localhost:8022'
 // 配置拦截器，在请求头中的Authorization携带token信息，保证拥有获取数据的权限
@@ -15,6 +16,8 @@ axios.interceptors.request.use(config => {
 Vue.prototype.$http = axios
 
 Vue.config.productionTip = false
+
+Vue.component('tree-table', TreeTable)
 
 new Vue({
   router,

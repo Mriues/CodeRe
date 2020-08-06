@@ -83,7 +83,7 @@
       <el-pagination @size-change="handleSizeChange"
                      @current-change="handleCurrentChange"
                      :current-page="queryInfo.pagenum"
-                     :page-sizes="[10, 15, 20, 25]"
+                     :page-sizes="[5, 15, 20, 25]"
                      :page-size="queryInfo.pagesize"
                      layout="total, sizes, prev, pager, next, jumper"
                      :total="total">
@@ -198,7 +198,7 @@ export default {
       queryInfo: {
         query: '',
         pagenum: 1,
-        pagesize: 10
+        pagesize: 5
       },
       userInfo: {},
       userlist: [],
@@ -241,15 +241,16 @@ export default {
   methods: {
     async getUserList () {
       const { data: res } = await this.$http.get('users', { params: this.queryInfo })
-      if (res.status !== 200) {
+      if (res.meta.status !== 200) {
         return this.$message.error('获取用户列表失败')
       }
 
-      this.userlist = res.users
-      this.total = res.total
+      this.userlist = res.data.users
+      this.total = res.data.total
     },
     handleSizeChange (newSize) {
       this.queryInfo.pagesize = newSize
+      this.queryInfo.pagenum = 1
       this.getUserList()
     },
     handleCurrentChange (newPage) {
@@ -330,7 +331,7 @@ export default {
       this.userInfo = userInfo
 
       const { data: res } = await this.$http.get('roles')
-      console.log(res)
+      // console.log(res)
 
       if (res.meta.status !== 200) {
         return this.$message.error('获取权限列表失败！')
