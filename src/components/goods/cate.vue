@@ -77,14 +77,18 @@
                label-width="100px">
         <el-form-item label="分类名称："
                       prop="cat_name">
-          <el-input v-model="addCateForm.cat_name"></el-input>
+          <el-input v-model="addCateForm.cat_name">
+
+          </el-input>
         </el-form-item>
         <el-form-item label="父级分类：">
+          <!-- 级联选择器 -->
           <el-cascader v-model="selectedKeys"
                        :options="parentCateList"
                        :props="cascaderProps"
                        @change="parentCateChange"
-                       clearable></el-cascader>
+                       clearable>
+          </el-cascader>
         </el-form-item>
       </el-form>
       <span slot="footer"
@@ -106,7 +110,9 @@
                label-width="100px">
         <el-form-item label="分类名称："
                       prop="cat_name">
-          <el-input v-model="updateCateForm.cat_name"></el-input>
+          <el-input v-model="updateCateForm.cat_name">
+
+          </el-input>
         </el-form-item>
       </el-form>
       <span slot="footer"
@@ -179,6 +185,7 @@ export default {
       // 指定级联选择器的配置对象
       cascaderProps: {
         expandTrigger: 'hover',
+        // 让一级可选
         checkStrictly: true,
         value: 'cat_id',
         label: 'cat_name',
@@ -288,6 +295,7 @@ export default {
         this.updateCateDialogVisible = false
       })
     },
+    // 根据id删除对应分类
     async deleteCateById (id) {
       const confirmRes = await this.$confirm('此操作将永久删除该分类及其子分类, 是否继续?', '提示', {
         confirmButtonText: '确定',
