@@ -27,7 +27,7 @@ Vue.use(VueQuillEdit)
 
 // 过滤器
 Vue.filter('dataFormat', function (originVal) {
-  const dt = new Date(originVal)
+  const dt = new Date(originVal * 1000)
 
   // 年月日
   const y = dt.getFullYear()
