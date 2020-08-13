@@ -10,9 +10,11 @@
     <el-card class="box-card">
       <el-row :gutter="20">
         <el-col :span="8">
+          <!-- 搜索框 -->
           <el-input placeholder="请输入内容"
                     v-model="queryInfo.query"
-                    clearable>
+                    clearable
+                    @clear="getUserList">
 
             <el-button slot="append"
                        icon="el-icon-search"
