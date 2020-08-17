@@ -29,7 +29,7 @@ export default {
   },
   async created () {
     await this.getData()
-    // 等待数据接收完毕再执行
+    // 确保DOM更新数据后再执行
     this.$nextTick(() => {
       this.drawLine()
     })
