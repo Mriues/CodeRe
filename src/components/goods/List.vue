@@ -189,7 +189,7 @@ export default {
       }
 
       const { data: res } = await this.$http.delete(`goods/${id}`)
-      if (res.meta.status !== 200) {
+      if (res.meta.status !== 204) {
         return this.$message.error('删除失败!')
       }
 
@@ -198,7 +198,7 @@ export default {
     },
     async showEditDialog (id) {
       const { data: res } = await this.$http.get(`goods/${id}`)
-      if (res.meta.status !== 201) {
+      if (res.meta.status !== 200) {
         return this.$message.error('获取商品信息失败！')
       }
       console.log(res.data)
@@ -210,7 +210,7 @@ export default {
     },
     async updateGoods () {
       const { data: res } = await this.$http.put(`goods/${this.editForm.goods_id}`, this.editForm)
-      if (res.meta.status !== 200) {
+      if (res.meta.status !== 201) {
         return this.$message.error('编辑商品信息失败！')
       }
       this.$message.success('编辑商品信息成功！')

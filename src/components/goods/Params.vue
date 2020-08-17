@@ -331,7 +331,7 @@ export default {
         const { data: res } = await this.$http.put(`categories/${this.cateId}/attributes/${this.editForm.attr_id}`,
           { attr_name: this.editForm.attr_name, attr_sel: this.activeName })
 
-        if (res.meta.status !== 200) {
+        if (res.meta.status !== 201) {
           return this.$message.error('修改参数失败！')
         }
 
@@ -389,7 +389,7 @@ export default {
       const { data: res } = await this.$http.put(`categories/${this.cateId}/attributes/${row.attr_id}`,
         { attr_name: row.attr_name, attr_sel: row.attr_sel, attr_vals: row.attr_vals.join(' ') })
 
-      if (res.meta.status !== 200) {
+      if (res.meta.status !== 201) {
         return this.$message.error('修改参数失败！')
       }
 

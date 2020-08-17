@@ -15,7 +15,6 @@
                     v-model="queryInfo.query"
                     clearable
                     @clear="getUserList">
-
             <el-button slot="append"
                        icon="el-icon-search"
                        @click="getUserList"></el-button>
@@ -92,7 +91,7 @@
       </el-pagination>
     </el-card>
 
-    <!-- 对话框 -->
+    <!-- 添加用户对话框 -->
     <el-dialog title="提示"
                :visible.sync="addDialogVisble"
                width="50%"
@@ -261,7 +260,7 @@ export default {
     },
     async userStateChange (userinfo) {
       const { data: res } = await this.$http.put(`users/${userinfo.id}/state/${userinfo.mg_state}`)
-      if (res.status !== 200) {
+      if (res.status !== 201) {
         userinfo.mg_state = !userinfo.mg_state
         return this.$message.error('更新用户状态失败！')
       }
@@ -300,7 +299,7 @@ export default {
       this.$refs.editFormRef.validate(async valid => {
         if (!valid) return
         const { data: res } = await this.$http.put(`users/${this.editForm.id}`, { email: this.editForm.email, mobile: this.editForm.mobile })
-        if (res.meta.status !== 200) {
+        if (res.meta.status !== 201) {
           return this.$message.error('更新用户信息失败！')
         }
         this.editDialogVisible = false
@@ -321,7 +320,7 @@ export default {
       }
 
       const { data: res } = await this.$http.delete(`users/${id}`)
-      if (res.meta.status !== 200) {
+      if (res.meta.status !== 204) {
         return this.$message.error('删除失败！')
       }
 
@@ -329,6 +328,7 @@ export default {
 
       return this.$message.success('删除用户成功！')
     },
+    // 分配角色
     async setRole (userInfo) {
       this.userInfo = userInfo
 
@@ -348,7 +348,7 @@ export default {
 
       const { data: res } = await this.$http.put(`users/${this.userInfo.id}/role`, { rid: this.selectRoleId })
 
-      if (res.meta.status !== 200) {
+      if (res.meta.status !== 201) {
         return this.$message.error('分配角色失败！')
       }
 

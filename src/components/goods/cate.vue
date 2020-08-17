@@ -286,7 +286,7 @@ export default {
         if (!valid) return
         const { data: res } = await this.$http.put(`categories/${this.updateCateForm.cat_id}`, { cat_name: this.updateCateForm.cat_name })
 
-        if (res.meta.status !== 200) {
+        if (res.meta.status !== 201) {
           return this.$message.error('编辑分类失败！')
         }
 
@@ -308,7 +308,7 @@ export default {
       }
 
       const { data: res } = await this.$http.delete(`categories/${id}`)
-      if (res.meta.status !== 200) {
+      if (res.meta.status !== 204) {
         return this.$message.error('删除分类失败！')
       }
 

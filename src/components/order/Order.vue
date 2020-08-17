@@ -53,7 +53,7 @@
             <el-button type="primary"
                        icon="el-icon-edit"
                        size="mini"
-                       @click="showBox"></el-button>
+                       @click="showBox(scope.row.order_id)"></el-button>
             <el-button type="success"
                        icon="el-icon-location"
                        size="mini"
@@ -106,7 +106,7 @@
                :visible.sync="progressVisible"
                width="50%">
       <!-- 时间线 -->
-      <el-timeline :reverse="reverse">
+      <el-timeline>
         <el-timeline-item v-for="(activity, index) in progressInfo"
                           :key="index"
                           :timestamp="activity.time">
