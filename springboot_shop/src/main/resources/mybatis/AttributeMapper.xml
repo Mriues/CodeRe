@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lpm.shop.mapper.AttributeMapper">
+
+    <resultMap id="AttributeResultMap" type="com.lpm.shop.entity.Attribute">
+        <id property="attrId" column="attr_id"/>
+        <result property="attrName" column="attr_name"/>
+        <result property="catId" column="cat_id"/>
+        <result property="attrSel" column="attr_sel"/>
+        <result property="attrWrite" column="attr_write"/>
+        <result property="attrVals" column="attr_vals"/>
+    </resultMap>
+
+    <select id="getAttributeById" resultMap="AttributeResultMap">
+        select attr_id,attr_name,cat_id,attr_sel,attr_write,attr_vals from attribute
+        where cat_id = #{id} and attr_sel = #{sel}
+    </select>
+
+    <insert id="addAttributeById">
+        insert into attribute(cat_id,attr_name,attr_sel,attr_vals) value (#{cateId},#{attrName},#{attrSel},#{attrVals})
+    </insert>
+
+    <select id="getOnlyAttributeById" resultMap="AttributeResultMap">
+        select attr_id,attr_name,cat_id,attr_sel,attr_write,attr_vals from attribute
+        where cat_id = #{cateId} and attr_id = #{attrId}
+    </select>
+
+    <update id="updateAttributeById">
+        update attribute set attr_name = #{attrName},attr_vals = #{attrVals}
+        where attr_id = #{attrId} and cat_id = #{cateId}
+    </update>
+
+    <delete id="deleteAttributeById">
+        delete from attribute where cat_id = #{cateId} and attr_id = #{attrId}
+    </delete>
+
+    <select id="getCatIdByAttrId" resultMap="AttributeResultMap">
+        select cat_id from attribute where attr_id = #{attrId}
+    </select>
+</mapper>

@@ -1,0 +1,28 @@
+spring:
+  datasource:
+    username: make
+    password: make
+    url: jdbc:mysql://localhost:3306/shop?serverTimezone=UTC
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      maximum-pool-size: 10
+  application:
+    name: springboot-jwt
+
+server:
+  port: 8083
+
+mybatis:
+  mapper-locations: classpath:mybatis/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+
+
+config:
+  jwt:
+    # 加密密钥
+    secret: abcde1234567
+    # token有效时长
+    expire: 3600
+    # header 名称
+    header: Authorization

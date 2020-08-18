@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lpm.shop.mapper.RolesMapper">
+    <resultMap id="RoleResultMap" type="com.lpm.shop.entity.Role">
+        <id property="id" column="id"/>
+        <result property="roleName" column="name"/>
+        <result property="roleDesc" column="d_esc"/>
+    </resultMap>
+
+    <select id="getRoleList" resultMap="RoleResultMap">
+        select * from role_inf
+    </select>
+
+    <insert id="addRole">
+        insert into role_inf(name ,d_esc) value (#{name },#{desc })
+    </insert>
+
+    <select id="getRoleInfoById" resultMap="RoleResultMap">
+        select * from role_inf where id = #{id}
+    </select>
+
+    <update id="updateRoleById">
+        update role_inf set name = #{name },d_esc = #{desc } where id = #{id }
+    </update>
+
+    <delete id="deleteRoleById">
+        delete from role_inf where id = #{id}
+    </delete>
+
+</mapper>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lpm.shop.mapper.RoleUnionRightMapper">
+    <resultMap id="unionResultMap" type="com.lpm.shop.entity.RoleUnionRight">
+        <id property="id" column="union_id"/>
+        <result property="roleId" column="role_id"/>
+        <result property="rightId" column="right_id"/>
+        <result property="level" column="level"/>
+        <result property="path" column="path"/>
+        <result property="pid" column="pid"/>
+        <result property="authName" column="auth_name"/>
+    </resultMap>
+
+    <select id="getRolesUnionRightsList" resultMap="unionResultMap">
+        SELECT * FROM role_right_inf a LEFT JOIN rights_inf b ON a.right_id = b.id;
+    </select>
+
+    <delete id="deleteRightFromRoleById">
+        delete from role_right_inf where role_id = #{id} and right_id = #{rightId}
+    </delete>
+
+    <insert id="addRightById">
+        insert into role_right_inf(role_id,right_id) value (#{roleId},#{rightId})
+    </insert>
+
+    <delete id="deleteAllRightByRoleId">
+        delete from role_right_inf where role_id = #{roleId}
+    </delete>
+
+</mapper>

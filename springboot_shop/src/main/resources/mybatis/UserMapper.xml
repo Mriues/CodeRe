@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lpm.shop.mapper.UserMapper">
+    <resultMap id="UserResultMap" type="com.lpm.shop.entity.User">
+        <id property="id" column="user_id"/>
+        <result property="name" column="user_name"/>
+        <result property="password" column="user_password"/>
+        <result property="roleName" column="role_name"/>
+        <result property="createTime" column="create_time"/>
+        <result property="isAdmin" column="is_admin"/>
+        <result property="state" column="mg_state"/>
+        <result property="email" column="email"/>
+        <result property="mobile" column="mobile"/>
+        <result property="level" column="level"/>
+    </resultMap>
+
+    <select id="findAll" resultMap="UserResultMap">
+        SELECT * FROM user_inf a LEFT JOIN role_inf b ON a.role_id = b.id;
+    </select>
+    
+    <select id="queryUserByName" resultMap="UserResultMap">
+        SELECT * FROM user_inf a LEFT JOIN role_inf b ON a.role_id = b.id
+        where
+        user_name = #{name }
+    </select>
+
+    <select id="searchUserByName" resultMap="UserResultMap">
+        SELECT * FROM user_inf a LEFT JOIN role_inf b ON a.role_id = b.id
+        where
+        user_name like "%"#{name }"%"
+    </select>
+
+    <insert id="addUser" useGeneratedKeys="true">
+        insert into user_inf(user_name,user_password,create_time,is_admin,mg_state) value (#{ name },#{ password },#{createTime},#{isAdmin},#{state})
+    </insert>
+    
+    <insert id="addUserForMenu" useGeneratedKeys="true">
+        insert into user_inf(user_name,user_password,create_time,is_admin,mg_state,email,mobile) value (#{name },#{password},#{createTime},#{isAdmin},#{state},#{email},#{mobile})
+    </insert>
+
+    <update id="updateState">
+        UPDATE user_inf SET mg_state = #{state} WHERE user_id = #{userId };
+    </update>
+
+    <select id="isAvailable" resultType="Integer">
+        select mg_state from user_inf where user_name = #{name }
+    </select>
+
+    <update id="updateUser">
+        UPDATE user_inf SET email = #{email},mobile = #{mobile} WHERE user_id = #{userId };
+    </update>
+
+    <delete id="deleteUser">
+        delete from user_inf where user_id = #{id}
+    </delete>
+
+    <update id="updateUserRole">
+        update user_inf set role_id = #{roleId} where user_id = #{userId}
+    </update>
+</mapper>

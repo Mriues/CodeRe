@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lpm.shop.mapper.ReportMapper">
+    <resultMap id="ReportResultMap" type="com.lpm.shop.entity.Report">
+        <id property="id" column="id"/>
+        <result property="userCount" column="rp1_user_count"/>
+        <result property="area" column="rp1_area"/>
+        <result property="date" column="rp1_date"/>
+    </resultMap>
+
+    <select id="getArea" resultMap="ReportResultMap">
+        select * from report_1 group by rp1_area;
+    </select>
+
+    <select id="getDate" resultMap="ReportResultMap">
+        select * from report_1 group by rp1_date;
+    </select>
+
+    <select id="getAreaUserCount" resultMap="ReportResultMap">
+        select * from report_1 where rp1_area = #{area}
+    </select>
+
+</mapper>

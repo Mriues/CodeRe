@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lpm.shop.mapper.GoodsMapper">
+    <resultMap id="GoodsResultMap" type="com.lpm.shop.entity.Goods">
+        <id column="goods_id" property="id"/>
+        <result property="name" column="goods_name"/>
+        <result property="price" column="goods_price"/>
+        <result property="number" column="goods_number"/>
+        <result property="weight" column="goods_weight"/>
+        <result property="state" column="goods_state"/>
+        <result property="addTime" column="add_time"/>
+        <result property="upTime" column="upd_time"/>
+        <result property="hotNumber" column="hot_mumber"/>
+        <result property="isPromote" column="is_promote"/>
+        <result property="catOneId" column="cat_one_id"/>
+        <result property="catTwoId" column="cat_two_id"/>
+        <result property="catThreeId" column="cat_three_id"/>
+        <result property="introduce" column="goods_introduce"/>
+    </resultMap>
+
+    <select id="getGoodsList" resultMap="GoodsResultMap">
+        select goods_id,goods_name,goods_price,goods_number,goods_weight,goods_state,
+         add_time,upd_time,hot_mumber,is_promote from goods
+         <where>
+             <if test="query != null and query != ''">
+                 goods_name like "%"#{query }"%"
+             </if>
+         </where>
+    </select>
+
+    <delete id="deleteById">
+        delete from goods where goods_id = #{id}
+    </delete>
+
+    <insert id="addGoods">
+        insert into goods
+        (goods_name,cat_one_id,cat_two_id,cat_three_id,goods_price,goods_number,goods_weight,goods_introduce,cat_id,add_time,upd_time)
+        value
+        (#{goodsName},#{oneId},#{twoId},#{threeId},#{price},#{number},#{weight},#{introduce},#{catId},#{addTime },#{updTime})
+    </insert>
+    
+    <select id="getGoodsIdByName" resultMap="GoodsResultMap">
+        select goods_id from goods where goods_name = #{goodsName}
+    </select>
+
+    <insert id="addgoodsAttrValue">
+        insert into goods_attr(goods_id,attr_id,attr_value) value (#{goodsId},#{attrId},#{attrValue})
+    </insert>
+
+    <select id="getGoodsById" resultMap="GoodsResultMap">
+        select goods_id,goods_name,goods_weight,goods_number,goods_price,goods_introduce
+        from goods
+        where goods_id = #{id}
+    </select>
+
+    <update id="updateGoodsById">
+        update goods set goods_name = #{goodsName},goods_price = #{goodsPrice},goods_weight = #{goodsWeight},goods_number = #{goodsNumber},goods_introduce = #{introduce},upd_time = #{updTime}
+        where
+        goods_id = #{goodsId}
+    </update>
+
+</mapper>
