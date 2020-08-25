@@ -260,7 +260,7 @@ export default {
     },
     async userStateChange (userinfo) {
       const { data: res } = await this.$http.put(`users/${userinfo.id}/state/${userinfo.mg_state}`)
-      if (res.status !== 201) {
+      if (res.meta.status !== 201) {
         userinfo.mg_state = !userinfo.mg_state
         return this.$message.error('更新用户状态失败！')
       }
@@ -273,7 +273,7 @@ export default {
       this.$refs.addFormRef.validate(async valid => {
         if (!valid) return
         const { data: res } = await this.$http.post('users', this.addForm)
-        if (res.status !== 201) {
+        if (res.meta.status !== 201) {
           return this.$message.error('添加用户失败')
         }
         this.$message.success('添加用户成功')

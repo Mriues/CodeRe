@@ -3,7 +3,7 @@
     <el-breadcrumb separator-class="el-icon-arrow-right">
       <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
       <el-breadcrumb-item>权限管理</el-breadcrumb-item>
-      <el-breadcrumb-item>角色列表</el-breadcrumb-item>
+      <el-breadcrumb-item>角色管理</el-breadcrumb-item>
     </el-breadcrumb>
 
     <el-card>
@@ -43,7 +43,7 @@
                   <!-- 三级渲染 -->
                   <el-col :span="18">
                     <el-tag type="warning"
-                            v-for="(item3,i3) in item2.children"
+                            v-for="item3 in item2.children"
                             :key="item3.id"
                             closable
                             @close="removeRightById(scope.row,item3.id)">{{item3.authName}}</el-tag>
