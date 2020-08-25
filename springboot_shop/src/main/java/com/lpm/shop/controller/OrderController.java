@@ -1,6 +1,7 @@
 package com.lpm.shop.controller;
 
 import com.lpm.shop.server.imp.OrderServiceImpl;
+import com.lpm.shop.util.MapResultUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,9 +17,12 @@ public class OrderController {
     @Autowired
     OrderServiceImpl orderService;
 
+    @Autowired
+    MapResultUtils mapResultUtils;
+
     @GetMapping("/orders")
     @ResponseBody
-    public Map getOrderList(@RequestParam(value = "query",required = false,defaultValue = "") String query,
+    public Map<String,Object> getOrderList(@RequestParam(value = "query",required = false,defaultValue = "") String query,
                             @RequestParam("pagenum") int pagenum,
                             @RequestParam("pagesize") int pagesize,
                             @RequestParam(value = "user_id",required = false,defaultValue = "0") Integer userId,
@@ -29,12 +33,7 @@ public class OrderController {
                             @RequestParam(value = "order_fapiao_content",required = false) String content,
                             @RequestParam(value = "consignee_addr",required = false) String addr){
         Map orderMap = orderService.getOrderList(query,pagenum,pagesize,userId,payStatus,isSend,title,company,content,addr);
-        HashMap<String,Object> metaMap = new HashMap<>();
-        HashMap<String,Object> map = new HashMap<>();
-        metaMap.put("status",200);
-        metaMap.put("msg","获取订单信息成功");
-        map.put("meta",metaMap);
-        map.put("data",orderMap);
+        HashMap<String, Object> map = mapResultUtils.resultMap(orderMap, 200, "获取订单信息成功");
         return map;
     }
 }

@@ -2,6 +2,7 @@ package com.lpm.shop.controller;
 
 import com.lpm.shop.server.imp.CateServcieImpl;
 import com.lpm.shop.util.JsonUtils;
+import com.lpm.shop.util.MapResultUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -20,9 +21,12 @@ public class CategoriesController {
     @Autowired
     JsonUtils jsonUtils;
 
+    @Autowired
+    MapResultUtils mapResultUtils;
+
     @GetMapping("/categories")
     @ResponseBody
-    public Map getCategoriesList(@RequestParam(value = "type",required = false,defaultValue = "3") int type,
+    public Map<String,Object> getCategoriesList(@RequestParam(value = "type",required = false,defaultValue = "3") int type,
                                  @RequestParam(value = "pagenum",required = false,defaultValue = "0") int pagenum,
                                  @RequestParam(value = "pagesize",required = false,defaultValue = "0") int pagesize){
         if (pagenum != 0 && pagesize != 0){
@@ -40,26 +44,16 @@ public class CategoriesController {
                     resultList.add(categoriesList.get(pagesize*(pagenum-1) + i));
                 }
             }
-            HashMap<String,Object> map = new HashMap<>();
-            HashMap<String,Object> metaMap = new HashMap<>();
             HashMap<String,Object> resultMap = new HashMap<>();
             resultMap.put("result",resultList);
             resultMap.put("pagenum",pagenum);
             resultMap.put("pagesize",pagesize);
             resultMap.put("total",categoriesList.size());
-            metaMap.put("status",200);
-            metaMap.put("msg","获取商品列表成功！");
-            map.put("meta",metaMap);
-            map.put("data",resultMap);
+            HashMap<String, Object> map = mapResultUtils.resultMap(resultMap, 200, "获取商品列表成功");
             return map;
         }else {
             List categoriesList = cateServcie.getCategoriesList(type);
-            HashMap<String,Object> map = new HashMap<>();
-            HashMap<String,Object> metaMap = new HashMap<>();
-            metaMap.put("status",200);
-            metaMap.put("msg","获取商品列表成功！");
-            map.put("meta",metaMap);
-            map.put("data",categoriesList);
+            HashMap<String, Object> map = mapResultUtils.resultMap(categoriesList, 200, "获取商品列表成功");
             return map;
         }
     }
@@ -67,15 +61,11 @@ public class CategoriesController {
     @PostMapping("/categories")
     @ResponseBody
     public Map<String,Object> addCategories(@RequestBody String data){
-        int cat_pid = jsonUtils.conversionInt(data, "cat_pid");
-        String cat_name = jsonUtils.conversionStr(data, "cat_name");
-        int cat_level = jsonUtils.conversionInt(data, "cat_level");
-        cateServcie.addCategories(cat_pid,cat_name,cat_level);
-        HashMap<String,Object> metaMap = new HashMap<>();
-        HashMap<String,Object> map = new HashMap<>();
-        metaMap.put("status",201);
-        metaMap.put("msg","添加分类成功！");
-        map.put("meta",metaMap);
+        int catPid = jsonUtils.conversionInt(data, "cat_pid");
+        String catName = jsonUtils.conversionStr(data, "cat_name");
+        int catLevel = jsonUtils.conversionInt(data, "cat_level");
+        cateServcie.addCategories(catPid,catName,catLevel);
+        HashMap<String, Object> map = mapResultUtils.resultMap(null, 201, "添加分类成功");
         return map;
     }
 
@@ -84,11 +74,7 @@ public class CategoriesController {
     public Map<String,Object> updateCategoriesById(@PathVariable("catId") int catId,@RequestBody String data){
         String catName = jsonUtils.conversionStr(data, "cat_name");
         cateServcie.updateCategories(catId,catName);
-        HashMap<String,Object> metaMap = new HashMap<>();
-        HashMap<String,Object> map = new HashMap<>();
-        metaMap.put("status",201);
-        metaMap.put("msg","更新分类成功！");
-        map.put("meta",metaMap);
+        HashMap<String, Object> map = mapResultUtils.resultMap(null, 201, "更新分类成功");
         return map;
     }
 
@@ -96,11 +82,7 @@ public class CategoriesController {
     @ResponseBody
     public Map<String,Object> deleteCategoriesById(@PathVariable("catId") int catId){
         cateServcie.deleteCategoriesById(catId);
-        HashMap<String,Object> metaMap = new HashMap<>();
-        HashMap<String,Object> map = new HashMap<>();
-        metaMap.put("status",204);
-        metaMap.put("msg","删除分类成功！");
-        map.put("meta",metaMap);
+        HashMap<String, Object> map = mapResultUtils.resultMap(null, 204, "删除分类成功");
         return map;
     }
 

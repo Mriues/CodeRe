@@ -5,7 +5,7 @@
 <mapper namespace="com.lpm.shop.mapper.RolesMapper">
     <resultMap id="RoleResultMap" type="com.lpm.shop.entity.Role">
         <id property="id" column="id"/>
-        <result property="roleName" column="name"/>
+        <result property="roleName" column="role_name"/>
         <result property="roleDesc" column="d_esc"/>
     </resultMap>
 

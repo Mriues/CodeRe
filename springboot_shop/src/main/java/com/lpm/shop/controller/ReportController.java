@@ -1,6 +1,7 @@
 package com.lpm.shop.controller;
 
 import com.lpm.shop.server.imp.ReportServiceImpl;
+import com.lpm.shop.util.MapResultUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,18 +17,16 @@ public class ReportController {
     @Autowired
     ReportServiceImpl reportService;
 
+    @Autowired
+    MapResultUtils mapResultUtils;
+
     @GetMapping("/reports")
     @ResponseBody
-    public Map getData(){
+    public Map<String,Object> getData(){
         List date = reportService.getDate();
         List areaUserCount = reportService.getAreaUserCount();
-        HashMap<String,Object> metaMap = new HashMap<>();
-        HashMap<String,Object> map = new HashMap<>();
-        metaMap.put("status",200);
-        metaMap.put("msg","获取数据成功");
-        map.put("meta",metaMap);
+        HashMap<String, Object> map = mapResultUtils.resultMap(areaUserCount, 200, "获取数据成功");
         map.put("x",date);
-        map.put("data",areaUserCount);
         return map;
     }
 }

@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Master
@@ -20,8 +21,8 @@ public class MenuController {
 
     @RequestMapping("/menus")
     @ResponseBody
-    public HashMap menulist(){
-        HashMap map = new HashMap();
+    public Map<String,Object> menulist(){
+        HashMap<String,Object> map = new HashMap();
         List menus = menuService.buildMenuList();
         map.put("data",menus);
         return map;

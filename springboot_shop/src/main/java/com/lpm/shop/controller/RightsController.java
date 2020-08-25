@@ -2,6 +2,7 @@ package com.lpm.shop.controller;
 
 import com.lpm.shop.server.imp.MenuServiceImpl;
 import com.lpm.shop.server.imp.RightsServiceImpl;
+import com.lpm.shop.util.MapResultUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class RightsController {
@@ -19,16 +21,14 @@ public class RightsController {
     @Autowired
     RightsServiceImpl rightsService;
 
+    @Autowired
+    MapResultUtils mapResultUtils;
+
     @GetMapping("/rights/list")
     @ResponseBody
-    public HashMap<String,Object> getList(){
-        HashMap<String,Object> map = new HashMap();
-        HashMap<String,Object> metaMap = new HashMap();
+    public Map<String,Object> getList(){
         List rightsList = rightsService.getRightsList();
-        map.put("data",rightsList);
-        metaMap.put("msg","获取权限列表成功");
-        metaMap.put("status",200);
-        map.put("meta",metaMap);
+        HashMap<String, Object> map = mapResultUtils.resultMap(rightsList, 200, "获取权限列表成功");
         return map;
     }
 }

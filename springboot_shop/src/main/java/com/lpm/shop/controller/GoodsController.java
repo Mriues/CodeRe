@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.lpm.shop.server.imp.AttributeServiceImpl;
 import com.lpm.shop.server.imp.GoodsServiceImpl;
 import com.lpm.shop.util.JsonUtils;
+import com.lpm.shop.util.MapResultUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -27,9 +28,12 @@ public class GoodsController {
     @Autowired
     JsonUtils jsonUtils;
 
+    @Autowired
+    MapResultUtils mapResultUtils;
+
     @GetMapping("/goods")
     @ResponseBody
-    public Map getGoodsList(@RequestParam("query") String query,
+    public Map<String,Object> getGoodsList(@RequestParam("query") String query,
                             @RequestParam("pagenum") int pagenum,
                             @RequestParam("pagesize") int pagesize){
         List goodsList = goodsService.getGoodsList(query);
@@ -46,35 +50,25 @@ public class GoodsController {
                 resultList.add(goodsList.get(pagesize*(pagenum-1) + i));
             }
         }
-        HashMap<String,Object> map = new HashMap<>();
         HashMap<String,Object> goodsMap = new HashMap<>();
-        HashMap<String,Object> metaMap = new HashMap<>();
-        metaMap.put("status",200);
-        metaMap.put("msg","获取商品列表成功");
         goodsMap.put("goods",resultList);
         goodsMap.put("pagenum",pagenum);
         goodsMap.put("total",goodsList.size());
-        map.put("meta",metaMap);
-        map.put("data",goodsMap);
+        HashMap<String, Object> map = mapResultUtils.resultMap(goodsMap, 200, "获取商品列表成功");
         return map;
     }
 
     @DeleteMapping("/goods/{id}")
     @ResponseBody
-    public Map deleteGoodsById(@PathVariable("id") int id){
+    public Map<String,Object> deleteGoodsById(@PathVariable("id") int id){
         goodsService.deleteById(id);
-        HashMap<String,Object> map = new HashMap<>();
-        HashMap<String,Object> metaMap = new HashMap<>();
-        metaMap.put("status",204);
-        metaMap.put("msg","已删除商品");
-        map.put("meta",metaMap);
-        map.put("data",null);
+        HashMap<String, Object> map = mapResultUtils.resultMap(null, 204, "已删除商品");
         return map;
     }
 
     @PostMapping("/upload")
     @ResponseBody
-    public Map uploadPicture(@RequestParam("file") MultipartFile file, HttpServletRequest request) throws IOException {
+    public Map<String,Object> uploadPicture(@RequestParam("file") MultipartFile file, HttpServletRequest request) throws IOException {
         //判断上传文件是否为空
         if (file.isEmpty()){
             HashMap<String,Object> map = new HashMap<>();
@@ -90,23 +84,18 @@ public class GoodsController {
             picture.getParentFile().mkdirs();
         }
         file.transferTo(picture);
-        HashMap<String,Object> map = new HashMap<>();
-        HashMap<String,Object> metaMap = new HashMap<>();
         HashMap<String,Object> data = new HashMap<>();
         String tmpPath = "tmp_uploads\\" + fileName;
         String url = "http://" + request.getLocalAddr() + ":" + request.getLocalPort() + "/" + tmpPath;
         data.put("tmp_path",tmpPath);
         data.put("url",url);
-        metaMap.put("status",201);
-        metaMap.put("msg","上传成功");
-        map.put("data",data);
-        map.put("meta",metaMap);
+        HashMap<String, Object> map = mapResultUtils.resultMap(data, 201, "上传成功");
         return map;
     }
 
     @PostMapping("/goods")
     @ResponseBody
-    public Map addGoods(@RequestBody String data){
+    public Map<String,Object> addGoods(@RequestBody String data){
         String goodsName = jsonUtils.conversionStr(data, "goods_name");
         String goodsCat = jsonUtils.conversionStr(data, "goods_cat");
         BigDecimal goodsPrice = jsonUtils.conversionDec(data, "goods_price");
@@ -137,43 +126,28 @@ public class GoodsController {
         goodsService.addGoods(goodsName,goodsCat,goodsPrice,goodsNumber,goodsWeight,catId,goodsIntroduce);
         int goodsId = goodsService.getGoodsIdByName(goodsName);
         goodsService.addgoodsAttrValue(goodsId,attrId,attrValue);
-
-        HashMap<String,Object> map = new HashMap<>();
-        HashMap<String ,Object> metaMap = new HashMap<>();
-        HashMap<String,Object> dataMap = new HashMap<>();
-        metaMap.put("status",201);
-        metaMap.put("msg","创建商品成功");
-        map.put("meta",metaMap);
+        HashMap<String, Object> map = mapResultUtils.resultMap(null, 201, "创建商品成功");
         return map;
     }
 
     @GetMapping("/goods/{id}")
     @ResponseBody
-    public Map getGoodsById(@PathVariable("id") int id){
+    public Map<String,Object> getGoodsById(@PathVariable("id") int id){
         Map goods = goodsService.getGoodsById(id);
-        HashMap<String,Object> metaMap = new HashMap<>();
-        HashMap<String,Object> map = new HashMap<>();
-        metaMap.put("status",200);
-        metaMap.put("msg","获取商品信息成功");
-        map.put("meta",metaMap);
-        map.put("data",goods);
+        HashMap<String, Object> map = mapResultUtils.resultMap(goods, 200, "获取商品信息成功");
         return map;
     }
 
     @PutMapping("/goods/{id}")
     @ResponseBody
-    public Map updateGoodsById(@PathVariable("id") int id,@RequestBody String data){
+    public Map<String,Object> updateGoodsById(@PathVariable("id") int id,@RequestBody String data){
         String goodsName = jsonUtils.conversionStr(data, "goods_name");
         String goodsIntroduce = jsonUtils.conversionStr(data, "goods_introduce");
         BigDecimal goodsPrice = jsonUtils.conversionDec(data, "goods_price");
         int goodsWeight = jsonUtils.conversionInt(data, "goods_weight");
         int goodsNumber = jsonUtils.conversionInt(data, "goods_number");
         goodsService.updateGoodsById(id,goodsName,goodsPrice,goodsWeight,goodsNumber,goodsIntroduce);
-        HashMap<String,Object> map = new HashMap<>();
-        HashMap<String,Object> metaMap = new HashMap<>();
-        metaMap.put("status",201);
-        metaMap.put("msg","更新商品成功");
-        map.put("meta",metaMap);
+        HashMap<String, Object> map = mapResultUtils.resultMap(null, 201, "更新商品成功");
         return map;
     }
 

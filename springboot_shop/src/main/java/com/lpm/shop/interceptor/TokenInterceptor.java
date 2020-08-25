@@ -41,9 +41,6 @@ public class TokenInterceptor extends HandlerInterceptorAdapter {
                 return true;
             }
             request.removeAttribute("identityId");
-            //返回登录页面
-            request.setAttribute("msg","登录已过期");
-            request.getRequestDispatcher("/login").forward(request,response);
             return false;
         }
 

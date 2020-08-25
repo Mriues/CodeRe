@@ -32,7 +32,6 @@ public class LoginAndRegister {
     @Autowired
     MenuServiceImpl menuService;
 
-
     @PostMapping("/login")
     @ResponseBody
     public Map<String,Object> login(@RequestBody String data,HttpSession session){

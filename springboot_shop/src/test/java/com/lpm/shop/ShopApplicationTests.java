@@ -9,8 +9,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 @SpringBootTest
 class ShopApplicationTests {
@@ -43,7 +41,7 @@ class ShopApplicationTests {
     @Test
     public void getArea() {
         List menus = menuService.buildMenuList();
-        System.out.println(menus);
+        System.out.println(menus.get(0));
     }
 
     @Test
